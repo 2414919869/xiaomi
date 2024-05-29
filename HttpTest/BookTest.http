@@ -1,2 +1,57 @@
 ###
 GET http://localhost:8080/book/count
+
+###
+GET http://localhost:8080/book/all
+
+###
+GET http://localhost:8080/book/1
+
+###
+GET http://localhost:8080/book/select/西游记
+
+###
+DELETE http://localhost:8080/book/del/20
+
+###
+POST http://localhost:8080/book/save
+Content-Type: application/json
+
+{
+  "bookName": "哆啦A梦",
+  "authorName": "D",
+  "type": "漫画",
+  "number": 6
+}
+
+###
+POST http://localhost:8080/book/update
+Content-Type: application/json
+
+{
+  "id": 25,
+  "bookName": "犬夜叉",
+  "authorName": "E",
+  "type": "漫画",
+  "number": 0
+}
+
+###
+POST http://localhost:8080/book/borrow
+Content-Type: application/json
+
+{
+  "bookName": "哆啦A梦",
+  "authorName": "D",
+  "type": "漫画"
+}
+
+###
+POST http://localhost:8080/book/borrow
+Content-Type: application/json
+
+{
+  "bookName": "犬夜叉",
+  "authorName": "E",
+  "type": "漫画"
+}

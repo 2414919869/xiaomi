@@ -53,15 +53,38 @@
             <version>3.3.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
+            <!-- mybatis generator 自动生成代码插件 -->
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <!--<configurationFile>src/main/resources/generator-config-member.xml</configurationFile>-->
+                    <configurationFile>src/main/resources/generator-book.xml</configurationFile>
+                    <!--<configurationFile>src/main/resources/generator-config-batch.xml</configurationFile>-->
+                    <overwrite>true</overwrite>
+                    <verbose>true</verbose>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.32</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
+
+
 
 </project>
