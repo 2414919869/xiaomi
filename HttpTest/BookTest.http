@@ -55,3 +55,13 @@ Content-Type: application/json
   "authorName": "E",
   "type": "漫画"
 }
+
+###
+POST http://localhost:8080/book/return
+Content-Type: application/json
+
+{
+  "bookName": "犬夜叉",
+  "authorName": "E",
+  "type": "漫画"
+}

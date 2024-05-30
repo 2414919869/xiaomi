@@ -75,7 +75,13 @@ public class BookController {
             return Resp.error()
                     .data("time",new Date());
         }
+    }
 
+    @PostMapping("/return")
+    public Resp returnBook(@Valid @RequestBody BookQueryReq req){
+        bookService.returnBook(req);
+        return Resp.success()
+                .data("time",new Date());
     }
 
 }

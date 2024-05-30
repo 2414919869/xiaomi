@@ -74,5 +74,19 @@ public class BookService {
         }
     }
 
+    public void returnBook(BookQueryReq bookQueryReq){
+        Book book=new Book();
+        BeanUtils.copyProperties(bookQueryReq,book);
+        BookExample bookExample=new BookExample();
+        bookExample.createCriteria().andBookNameEqualTo(book.getBookName())
+                .andAuthorNameEqualTo(book.getAuthorName())
+                .andTypeEqualTo(book.getType());
+        List<Book> list=bookMapper.selectByExample(bookExample);
+        BeanUtils.copyProperties(list.get(0),book);
+        int num=book.getNumber();
+        book.setNumber(num+1);
+        bookMapper.updateByPrimaryKey(book);
+    }
+
 
 }
