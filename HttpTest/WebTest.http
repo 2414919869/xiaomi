@@ -1,5 +1,8 @@
 ###
-GET http://localhost:8080/tset/test
+GET http://localhost:8080/tset/test1
 
 ###
 GET http://localhost:8080/test/resptest
+
+###
+GET http://localhost:8080/test/hello
