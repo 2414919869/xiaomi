@@ -6,8 +6,10 @@ import com.czy.library.mapper.BookMapper;
 import com.czy.library.request.BookQueryReq;
 import com.czy.library.request.BookSaveReq;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import util.RedisUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,6 +19,9 @@ public class BookService {
     @Resource
     private BookMapper bookMapper;
 
+    @Resource
+    private RedisUtils redisUtils;
+
     public long count(){
         return bookMapper.countByExample(null);
     }
@@ -25,6 +30,18 @@ public class BookService {
         BookExample bookExample=new BookExample();
         bookExample.setOrderByClause("id asc");
         return bookMapper.selectByExample(bookExample);
+    }
+
+    public List<Book> getAll(){
+        //从redis中取数据
+        String allBooks= redisUtils.get("allBooks");
+        //没有则查询并放入缓存
+        if (allBooks==null){
+            BookExample bookExample=new BookExample();
+            bookExample.setOrderByClause("id asc");
+            redisUtils.set("allBooks",String.valueOf(bookMapper.selectByExample(bookExample)));
+        }
+        return bookMapper.selectByExample(null);
     }
 
     public Book selectById(int id){
@@ -42,6 +59,14 @@ public class BookService {
         bookMapper.deleteByPrimaryKey(id);
     }
 
+    public void deleteByRedis(int id){
+        // 删除redis缓存数据
+        redisUtils.delete("book_" + id);
+        // 删除操作
+        bookMapper.deleteByPrimaryKey(id);
+
+    }
+
     public void save(BookSaveReq bookSaveReq){
         Book book=new Book();
         BeanUtils.copyProperties(bookSaveReq,book);
@@ -51,6 +76,15 @@ public class BookService {
     public void updateByPrimaryKey(BookSaveReq bookSaveReq){
         Book book=new Book();
         BeanUtils.copyProperties(bookSaveReq,book);
+        bookMapper.updateByPrimaryKey(book);
+    }
+
+    public void updateByPrimaryRedis(BookSaveReq bookSaveReq){
+        Book book=new Book();
+        BeanUtils.copyProperties(bookSaveReq,book);
+        // 删除redis中的缓存
+        redisUtils.delete("book_" + book.getId());
+        // 修改操作
         bookMapper.updateByPrimaryKey(book);
     }
 
